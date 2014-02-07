@@ -10,15 +10,64 @@ static TextLayer *temp_layer;
 static TextLayer *progress_label;
 static TextLayer *progress_layer;
 
-static AppSync sync;
-static uint8_t sync_buffer[64];
-
+//static AppSync sync;
+//static uint8_t sync_buffer[64];
+/*
 enum PrintJobKey {
   PRINT_FILE_KEY = 0x0,
   PRINT_TEMP_KEY = 0x1,
   PRINT_PROGRESS_KEY = 0x2,
 };
+*/
 
+enum {
+	AKEY_NUMBER,
+	AKEY_TEXT,
+};
+
+// AppMessage plumbing
+void out_sent_handler(DictionaryIterator *sent, void *context) {
+   // outgoing message was delivered
+}
+
+
+void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
+   // outgoing message failed
+}
+
+
+void in_received_handler(DictionaryIterator *received, void *context) {
+	// incoming message received
+	
+	// Check for fields you expect to receive
+	Tuple *filename_tuple = dict_find(received, 0);
+	Tuple *temp_tuple = dict_find(received, 1);
+	Tuple *progress_tuple = dict_find(received, 2);
+
+	// Act on the found fields received
+	if (filename_tuple) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "setting file name to: %s", filename_tuple->value->cstring);
+		text_layer_set_text(file_layer, filename_tuple->value->cstring);
+	}
+	
+	if (filename_tuple) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "setting temp to: %s", temp_tuple->value->cstring);
+		text_layer_set_text(temp_layer, temp_tuple->value->cstring);
+	}
+	
+	if (progress_tuple) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "setting progress to: %s", progress_tuple->value->cstring);
+		text_layer_set_text(progress_layer, progress_tuple->value->cstring);
+	}
+}
+
+
+void in_dropped_handler(AppMessageResult reason, void *context) {
+   // incoming message dropped
+}
+
+
+/*
 static void sync_error_callback(DictionaryResult dict_error, AppMessageResult app_message_error, void *context) {
   APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sync Error: %d", app_message_error);
 }
@@ -60,17 +109,26 @@ static void send_cmd(void) {
 
   app_message_outbox_send();
 }
+*/
 
 // timer events
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Time flies!");
         
-        send_cmd();
+        //send_cmd();
 }
     
 // button events
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   //text_layer_set_text(text_layer, "Select");
+  
+	DictionaryIterator *iter;
+	app_message_outbox_begin(&iter);
+	
+	Tuplet value = TupletInteger(1, 42);
+	dict_write_tuplet(iter, &value);
+	
+	app_message_outbox_send();
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -144,6 +202,7 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
   */
   
+  /*
   Tuplet initial_values[] = {
     TupletCString(PRINT_FILE_KEY, "loading file"),
     TupletCString(PRINT_TEMP_KEY, "loading temp"),
@@ -154,12 +213,13 @@ static void window_load(Window *window) {
       sync_tuple_changed_callback, sync_error_callback, NULL);
 
   //send_cmd();
+  */
   
   tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 }
 
 static void window_unload(Window *window) {
-  app_sync_deinit(&sync);
+  //app_sync_deinit(&sync);
   
   text_layer_destroy(file_label);
   text_layer_destroy(file_layer);
@@ -179,9 +239,21 @@ static void init(void) {
     .unload = window_unload,
   });
   
+  /*
   const int inbound_size = 64;
   const int outbound_size = 64;
   app_message_open(inbound_size, outbound_size);
+  */
+  
+	// init AppMessage & wire-up handlers
+	app_message_register_inbox_received(in_received_handler);
+	app_message_register_inbox_dropped(in_dropped_handler);
+	app_message_register_outbox_sent(out_sent_handler);
+	app_message_register_outbox_failed(out_failed_handler);
+	
+	const uint32_t inbound_size = 64;
+	const uint32_t outbound_size = 64;
+	app_message_open(inbound_size, outbound_size);
   
   const bool animated = true;
   window_stack_push(window, animated);

@@ -7,45 +7,49 @@ function fetchPrinterStatus() {
       if(req.status == 200) {
         //console.log(req.responseText);
         response = JSON.parse(req.responseText);
-        var filename, temp, progress;
-        filename = response.job.filename;
-        temp = response.temperatures.extruder.current.toString();
+        //var filename, temp, progress;
+        
+        var filename = response.job.filename;
+        var temp = response.temperatures.extruder.current.toString();
         var prog_percent = Number(response.progress.progress) * 100;
-        progress = prog_percent.toString();
+        var progress = prog_percent.toString();
         
         console.log(filename);
         console.log(temp);
         console.log(progress);
         
         Pebble.sendAppMessage({
-            "filename":filename,
-            "temperature":temp,
-            "progress":progress});
+            "0":filename,
+            "1":temp,
+            "2":progress}, appMessageACK, appMessageNACK);
       }
     }
   }
   req.send(null);
 }
 
+function appMessageACK(e){
+	console.log('message delivered!');
+}
+
+function appMessageNACK(e){
+	console.log('message failed!');
+	console.log(e.error.message);
+}
+
 Pebble.addEventListener("ready",
     function(e) {
-    	console.log("got ready");
+    	console.log("got ready event");
         //fetchPrinterStatus();
     }
 );
 
 Pebble.addEventListener("appmessage",
-                        function(e) {
-                          //window.navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
-                          fetchPrinterStatus();
-                          console.log(e.type);
-                          console.log(e.payload.filename);
-                          console.log("message!");
-                        });
+	function(e) {
+		console.log('received appMessage:');                        
+		console.log(e.type);
+		console.log(e.payload);
+	  
+		fetchPrinterStatus();
+});
                         
-Pebble.addEventListener("webviewclosed",
-                                     function(e) {
-                                     console.log("webview closed");
-                                     console.log(e.type);
-                                     console.log(e.response);
-                                     });
