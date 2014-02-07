@@ -10,7 +10,8 @@ function fetchPrinterStatus() {
         var filename, temp, progress;
         filename = response.job.filename;
         temp = response.temperatures.extruder.current.toString();
-        progress = response.progress.progress.toString();
+        var prog_percent = Number(response.progress.progress) * 100;
+        progress = prog_percent.toString();
         
         console.log(filename);
         console.log(temp);
