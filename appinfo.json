@@ -1,0 +1,17 @@
+{
+  "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
+  "shortName": "octowatch",
+  "longName": "octowatch",
+  "companyName": "MakeAwesomeHappen",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
