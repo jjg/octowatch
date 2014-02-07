@@ -66,54 +66,9 @@ void in_dropped_handler(AppMessageResult reason, void *context) {
    // incoming message dropped
 }
 
-
-/*
-static void sync_error_callback(DictionaryResult dict_error, AppMessageResult app_message_error, void *context) {
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "App Message Sync Error: %d", app_message_error);
-}
-
-static void sync_tuple_changed_callback(const uint32_t key, const Tuple* new_tuple, const Tuple* old_tuple, void* context) {
-
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "got tuple changed callback");
-  
-  switch (key) {
-    case PRINT_FILE_KEY:
-      APP_LOG(APP_LOG_LEVEL_DEBUG, "setting file name to: %s", new_tuple->value->cstring);
-      text_layer_set_text(file_layer, new_tuple->value->cstring);
-      break;
-
-    case PRINT_TEMP_KEY:
-      APP_LOG(APP_LOG_LEVEL_DEBUG, "setting temp to: %s", new_tuple->value->cstring);
-      text_layer_set_text(temp_layer, new_tuple->value->cstring);
-      break;
-
-    case PRINT_PROGRESS_KEY:
-      APP_LOG(APP_LOG_LEVEL_DEBUG, "setting progress to: %s", new_tuple->value->cstring);
-      text_layer_set_text(progress_layer, new_tuple->value->cstring);
-      break;
-  }
-}
-
-static void send_cmd(void) {
-  Tuplet value = TupletInteger(1, 1);
-
-  DictionaryIterator *iter;
-  app_message_outbox_begin(&iter);
-
-  if (iter == NULL) {
-    return;
-  }
-
-  dict_write_tuplet(iter, &value);
-  dict_write_end(iter);
-
-  app_message_outbox_send();
-}
-*/
-
 // timer events
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Time flies!");
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "update timer fired");
         
         //send_cmd();
 }
@@ -202,19 +157,6 @@ static void window_load(Window *window) {
   layer_add_child(window_layer, text_layer_get_layer(text_layer));
   */
   
-  /*
-  Tuplet initial_values[] = {
-    TupletCString(PRINT_FILE_KEY, "loading file"),
-    TupletCString(PRINT_TEMP_KEY, "loading temp"),
-    TupletCString(PRINT_PROGRESS_KEY, "loading prog"),
-  };
-
-  app_sync_init(&sync, sync_buffer, sizeof(sync_buffer), initial_values, ARRAY_LENGTH(initial_values),
-      sync_tuple_changed_callback, sync_error_callback, NULL);
-
-  //send_cmd();
-  */
-  
   tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 }
 
@@ -238,12 +180,6 @@ static void init(void) {
     .load = window_load,
     .unload = window_unload,
   });
-  
-  /*
-  const int inbound_size = 64;
-  const int outbound_size = 64;
-  app_message_open(inbound_size, outbound_size);
-  */
   
 	// init AppMessage & wire-up handlers
 	app_message_register_inbox_received(in_received_handler);
