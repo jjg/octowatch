@@ -30,7 +30,7 @@ function fetchPrinterStatus() {
 Pebble.addEventListener("ready",
     function(e) {
     	console.log("got ready");
-        fetchPrinterStatus();
+        //fetchPrinterStatus();
     }
 );
 
