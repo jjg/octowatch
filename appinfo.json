@@ -1,15 +1,17 @@
 {
   "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
-  "shortName": "octowatch",
-  "longName": "octowatch",
-  "companyName": "MakeAwesomeHappen",
+  "shortName": "Octowatch",
+  "longName": "Octowatch",
+  "companyName": "Gullickson Laboratories",
   "versionCode": 1,
   "versionLabel": "1.0.0",
   "watchapp": {
     "watchface": false
   },
   "appKeys": {
-    "dummy": 0
+    "progress": 2,
+    "temperature": 1,
+    "filename": 0
   },
   "resources": {
     "media": []
