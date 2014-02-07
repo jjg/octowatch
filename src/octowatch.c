@@ -61,7 +61,13 @@ static void send_cmd(void) {
   app_message_outbox_send();
 }
 
-
+// timer events
+static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Time flies!");
+        
+        send_cmd();
+}
+    
 // button events
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   //text_layer_set_text(text_layer, "Select");
@@ -148,6 +154,8 @@ static void window_load(Window *window) {
       sync_tuple_changed_callback, sync_error_callback, NULL);
 
   //send_cmd();
+  
+  tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 }
 
 static void window_unload(Window *window) {

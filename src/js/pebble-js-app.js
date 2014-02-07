@@ -36,7 +36,7 @@ Pebble.addEventListener("ready",
 Pebble.addEventListener("appmessage",
                         function(e) {
                           //window.navigator.geolocation.getCurrentPosition(locationSuccess, locationError, locationOptions);
-                          //fetchPrinterStatus();
+                          fetchPrinterStatus();
                           console.log(e.type);
                           console.log(e.payload.filename);
                           console.log("message!");
