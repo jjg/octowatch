@@ -1,8 +1,3 @@
-// configuration
-//var octoprint_host = '10.0.1.14';
-//var octoprint_port = '5000';
-//var octoprint_api_key = '72314DBEB2E0475CA0F98DB25B17FB86';
-
 var printing = false;
 
 function fetchPrinterStatus() {
@@ -12,9 +7,6 @@ function fetchPrinterStatus() {
 	var octoprint_api_key = localStorage.getItem('octoprintapikey');
 
 	var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/state?apikey=' + octoprint_api_key;
-	
-	// debug
-	console.log(octoprint_api_url);
 	
 	var response;
 	var req = new XMLHttpRequest();
@@ -69,9 +61,6 @@ function pausePrinter() {
 	var octoprint_host = localStorage.getItem('octoprinthost');
 	var octoprint_port = localStorage.getItem('octoprintport');
 	var octoprint_api_key = localStorage.getItem('octoprintapikey');
-	
-	// debug
-	console.log(octoprint_api_url);
 	
 	var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/control/job';
 	
@@ -146,21 +135,13 @@ Pebble.addEventListener("showConfiguration",
 
 Pebble.addEventListener("webviewclosed", function(e) {
 
+		console.log('saving settings');
+
 		var options = JSON.parse(decodeURIComponent(e.response));
-		
-		console.log('options = ' + JSON.stringify(options));
-		
-		console.log('saving new settings');
 		
 		localStorage.setItem('octoprinthost', options.server_host);
 		localStorage.setItem('octoprintport', options.server_port);
 		localStorage.setItem('octoprintapikey', options.server_api_key);
-		
-		console.log('heres the saved settings:');
-		console.log(localStorage.getItem('octoprinthost'));
-		console.log(localStorage.getItem('octoprintport'));
-		console.log(localStorage.getItem('octoprintapikey'));
-		console.log('--- end saved settings ---');
 	}
 );
 

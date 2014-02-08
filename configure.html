@@ -13,8 +13,7 @@
 		
 		<script>
 			function saveSettings(){
-				console.log('saving settings');
-				
+
 				// get values
 				var server_host = document.getElementById('host');
 				var server_port = document.getElementById('port');
@@ -27,8 +26,6 @@
 				options.server_api_key = server_api_key.value;
 				
 				var location = "pebblejs://close#" + encodeURIComponent(JSON.stringify(options));
-				
-				console.log(location);
 				
 				document.location = location;
 			}
