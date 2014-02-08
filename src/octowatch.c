@@ -115,11 +115,15 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "up click");
 	
+	send_octoprint_command("pause");
+	
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
 
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "down click");
+	
+	send_octoprint_command("cancel");
 	
 }
 

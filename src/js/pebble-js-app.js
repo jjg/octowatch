@@ -39,10 +39,40 @@ function fetchPrinterStatus() {
 			    "1":remaining,
 			    "2":progress}, appMessageACK, appMessageNACK);
 			}
+		} else {
+		
+			console.log('something went wrong, ' + req.status);
 		}
 	}
 	req.send(null);
 }
+
+function pausePrinter() {
+
+	var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/control/job';
+	
+	// debug
+	console.log('calling ' + octoprint_api_url + ' to pause current print job');
+	
+	var response;
+	var req = new XMLHttpRequest();
+	req.open('POST', octoprint_api_url, true);
+	req.data = 'x-api-key=' + octoprint_api_key + '&body={"command":"pause"}';
+	req.onload = function(e) {
+	if (req.readyState == 4) {
+		if(req.status == 200) {
+			
+			response = JSON.parse(req.responseText);
+			
+			console.log(response);
+			
+			Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
+			}
+		}
+	}
+	req.send(null);
+}
+
 
 function appMessageACK(e){
 	console.log('message delivered!');
@@ -67,6 +97,15 @@ Pebble.addEventListener("appmessage",
 		
 		if(e.payload.octoprint_command == "update"){
 			fetchPrinterStatus();
+		}
+		
+		if(e.payload.octoprint_command == "pause"){
+			// toggle pause state
+			pausePrinter();
+		}
+		
+		if(e.payload.octoprint_command == "cancel"){
+			// cancel the print job
 		}
 });
 
