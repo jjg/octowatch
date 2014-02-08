@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<title>Octowatch Configuration</title>
+	</head>
+	<body>
+		<h3>Octoprint Server Settings</h3>
+		<ul>
+			<li>host: <input id="host">
+			<li>port: <input id="port">
+			<li>api key: <input id="api_key">
+			<li><button id="save_button" action="saveSettings()">save</button>
+		</ul>
+		
+		<script>
+			function saveSettings(){
+				document.location = 'pebblejs:///close';
+			}
+		</script>
+	</body>
+</html>

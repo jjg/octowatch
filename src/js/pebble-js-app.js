@@ -122,6 +122,8 @@ Pebble.addEventListener("appmessage",
 Pebble.addEventListener("showConfiguration",
 	function(){
 		console.log('running configuration');
+		
+		//Pebble.openURL();
 	}
 );
                         
