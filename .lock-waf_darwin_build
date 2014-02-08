@@ -1,0 +1,8 @@
+argv = ['/Users/jason/Development/pebble-dev/PebbleSDK-2.0.0/Pebble/waf', 'configure', 'build']
+environ = {'_': '/Users/jason/Development/pebble-dev/PebbleSDK-2.0.0/Pebble/waf', 'TERM_SESSION_ID': 'B98E02C3-E7CE-4B71-9251-A215AB7AF8B7', 'SSH_AUTH_SOCK': '/tmp/launch-YVBAUM/Listeners', 'VERSIONER_PYTHON_PREFER_32_BIT': 'no', 'TERM_PROGRAM_VERSION': '326', 'SHELL': '/bin/bash', 'LOGNAME': 'jason', 'USER': 'jason', 'HOME': '/Users/jason', 'PATH': '/Users/jason/Development/pebble-dev/PebbleSDK-2.0.0/arm-cs-tools/bin:/Users/jason/Development/pebble-dev/PebbleSDK-2.0.0/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin', 'TMPDIR': '/var/folders/56/6bc9dq5n2zz93clbtnd9b_l00000gn/T/', 'TERM_PROGRAM': 'Apple_Terminal', 'LANG': 'en_US.UTF-8', 'TERM': 'xterm-256color', 'Apple_PubSub_Socket_Render': '/tmp/launch-2Li5pN/Render', 'VERSIONER_PYTHON_VERSION': '2.7', 'SHLVL': '2', 'PGSSLMODE': 'require', '__CF_USER_TEXT_ENCODING': '0x1F5:0:0', 'PWD': '/Users/jason/Development/octowatch', 'PGSSLREQUIRED': '1', '__CHECKFIX1436934': '1'}
+files = ['/Users/jason/Development/octowatch/wscript']
+hash = 4672844372416070989
+options = {'files': '', 'jobs': 4, 'verbose': 0, 'nocache': False, 'progress_bar': 0, 'timestamp': None, 'distcheck_args': None, 'top': '', 'destdir': '', 'keep': 0, 'zones': '', 'debug': False, 'prefix': '/usr/local/', 'download': False, 'force': False, 'targets': '', 'out': ''}
+out_dir = '/Users/jason/Development/octowatch/build'
+run_dir = '/Users/jason/Development/octowatch'
+top_dir = '/Users/jason/Development/octowatch'
