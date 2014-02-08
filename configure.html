@@ -15,7 +15,25 @@
 			function saveSettings(){
 				console.log('saving settings');
 				
-				console.log('close configuration view');
+				// get values
+				var server_host = document.getElementById('host');
+				var server_port = document.getElementById('port');
+				var server_api_key = document.getElementById('api_key');
+				
+				// create options object
+				var options = {};
+				options.server_host = server_host.value;
+				options.server_port = server_port.value;
+				options.server_api_key = server_api_key.value;
+				
+				// debug
+				console.log(options);
+				
+				var location = "pebblejs://close#" + encodeURIComponent(JSON.stringify(options));
+				
+				console.log('return config');
+				console.log(location);
+				
 				document.location = 'pebblejs://close';
 			}
 		</script>
