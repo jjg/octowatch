@@ -139,9 +139,9 @@ static void window_load(Window *window) {
 	action_bar = action_bar_layer_create();
 	action_bar_layer_add_to_window(action_bar, window);
 	action_bar_layer_set_click_config_provider(action_bar,click_config_provider);
-	action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_up);
+	//action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_up);
 	action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, image_up);
-	action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_up);
+	//action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_up);
 	
 	// background layer
 	bg_layer = layer_create(GRect(1, 3, (bounds.size.w - 22), bounds.size.h));

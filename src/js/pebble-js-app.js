@@ -43,6 +43,10 @@ function fetchPrinterStatus() {
 			console.log(remaining);
 			console.log(progress);
 			
+			// Issue: too long filenames break messaging, so
+			// for now, trimming them to 23chrs max
+			filename = filename.substring(0,20) + '...';
+			
 			Pebble.sendAppMessage({
 			    "0":filename,
 			    "1":remaining,
@@ -117,7 +121,7 @@ Pebble.addEventListener("appmessage",
 		
 		if(e.payload.octoprint_command == "pause"){
 			// toggle pause state
-			pausePrinter();
+			//pausePrinter();
 		}
 		
 		if(e.payload.octoprint_command == "cancel"){
