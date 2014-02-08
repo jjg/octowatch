@@ -46,3 +46,5 @@ This will bring up the (yes, ugly) configuration screen for Octowatch.  Enter th
 
 ##Troubleshooting
 Octowatch is considered Alpha software at the moment.  Things are likely to change and bugs can be expected.  If you run into trouble, double-check the settings as right now Octowatch won't tell you if you entred something wrong, it simply won't work correctly (this will be improved in future versions :)
+
+If you have questions, feedback or bug reports, visit the Issues section of the repository (https://github.com/jjg/octowatch/issues) to see what is on the roadmap and to provide feedback.  If you'd like to work on improving Octowatch pull requests are always welcome!
