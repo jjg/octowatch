@@ -8,17 +8,27 @@ function fetchPrinterStatus() {
         response = JSON.parse(req.responseText);
         
         var filename = response.job.filename;
-        var temp = response.temperatures.extruder.current.toString();
-        var prog_percent = Number(response.progress.progress) * 100;
+        
+        var remaining = response.progress.printTimeLeft;
+        var remaining_string = '00:00';
+        
+        if(remaining){
+        	remaining_string = remaining.toString().substring(0,5);
+        }
+        
+        var remaining = remaining_string;
+        
+        var prog_percent = Math.round(Number(response.progress.progress) * 100);
+        prog_percent = prog_percent + '% complete';
         var progress = prog_percent.toString();
         
         console.log(filename);
-        console.log(temp);
+        console.log(remaining);
         console.log(progress);
         
         Pebble.sendAppMessage({
             "0":filename,
-            "1":temp,
+            "1":remaining,
             "2":progress}, appMessageACK, appMessageNACK);
       }
     }
@@ -32,7 +42,7 @@ function appMessageACK(e){
 
 function appMessageNACK(e){
 	console.log('message failed!');
-	console.log(e.error.message);
+	console.log(e.error);
 }
 
 Pebble.addEventListener("ready",

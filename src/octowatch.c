@@ -70,7 +70,7 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 	
 	// Check for fields you expect to receive
 	Tuple *filename_tuple = dict_find(received, 0);
-	Tuple *temp_tuple = dict_find(received, 1);
+	Tuple *remain_tuple = dict_find(received, 1);
 	Tuple *progress_tuple = dict_find(received, 2);
 
 	// Act on the found fields received
@@ -79,9 +79,9 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 		text_layer_set_text(filename_label, filename_tuple->value->cstring);
 	}
 	
-	if (filename_tuple) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "setting temp to: %s", temp_tuple->value->cstring);
-		//text_layer_set_text(temp_layer, temp_tuple->value->cstring);
+	if (remain_tuple) {
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "time remaining: %s", remain_tuple->value->cstring);
+		text_layer_set_text(time_remaining_counter, remain_tuple->value->cstring);
 	}
 	
 	if (progress_tuple) {
@@ -146,7 +146,7 @@ static void bg_layer_draw(Layer *layer, GContext *ctx) {
 	graphics_fill_rect(ctx, GRect(0, 0, bounds.size.w, 75), 4, GCornersAll);
 	
 	// filename container
-	graphics_draw_round_rect(ctx, GRect(0,77, bounds.size.w, 35), 4);
+	graphics_draw_round_rect(ctx, GRect(0,77, bounds.size.w, 40), 4);
 	
 	// progress container
 	graphics_fill_rect(ctx, GRect(0, 121, bounds.size.w, 25), 4, GCornersAll);
@@ -195,7 +195,7 @@ static void window_load(Window *window) {
 	layer_add_child(bg_layer, text_layer_get_layer(time_remaining_label));
 	
 	time_remaining_counter = text_layer_create(GRect(0, 20, bg_bounds.size.w, 60));
-	text_layer_set_text(time_remaining_counter, "00:00");
+	text_layer_set_text(time_remaining_counter, "??:??");
 	text_layer_set_text_color(time_remaining_counter, GColorWhite);
 	text_layer_set_background_color(time_remaining_counter, GColorClear);
 	text_layer_set_font(time_remaining_counter, fonts_get_system_font(FONT_KEY_BITHAM_42_MEDIUM_NUMBERS));
@@ -214,7 +214,7 @@ static void window_load(Window *window) {
 	
 	// progress
 	progress_label = text_layer_create(GRect(3, 122, (bg_bounds.size.w -4), 25));
-	text_layer_set_text(progress_label, "0.00 complete");
+	text_layer_set_text(progress_label, "loading...");
 	text_layer_set_text_color(progress_label, GColorWhite);
 	text_layer_set_background_color(progress_label, GColorClear);
 	text_layer_set_font(progress_label, fonts_get_system_font(FONT_KEY_GOTHIC_18));
