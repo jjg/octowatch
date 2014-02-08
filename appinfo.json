@@ -14,6 +14,12 @@
     "octoprint_command": 0
   },
   "resources": {
-    "media": []
+    "media": [
+    	{
+          "type": "png",
+          "name": "IMAGE_UP",
+          "file": "images/up.png"
+        }
+    ]
   }
 }
