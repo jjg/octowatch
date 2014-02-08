@@ -10,8 +10,6 @@
     "watchface": false
   },
   "appKeys": {
-    "down": 2,
-    "select": 1,
     "octoprint_command": 0
   },
   "resources": {

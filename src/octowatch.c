@@ -1,33 +1,13 @@
 #include <pebble.h>
 
 static Window *window;
-static TextLayer *text_layer;
-
-// action bar parts
 ActionBarLayer *action_bar;
 static GBitmap *image_up;
-
-//HeapBitmap button_image_up;
-//HeapBitmap button_image_down;
-//HeapBitmap button_image_setup;
-
-/*
-static TextLayer *file_label;
-static TextLayer *file_layer;
-static TextLayer *temp_label;
-static TextLayer *temp_layer;
-static TextLayer *progress_label;
-static TextLayer *progress_layer;
-*/
-
 static Layer *bg_layer;
 static TextLayer *time_remaining_label;
 static TextLayer *time_remaining_counter;
 static TextLayer *filename_label;
-//static TextLayer *filename_display;
 static TextLayer *progress_label;
-//static TextLayer *progress_display;
-
 
 enum {
 	OCTOPRINT_COMMAND = 0x0,
@@ -133,14 +113,6 @@ void click_config_provider(void *context) {
 	window_single_click_subscribe(BUTTON_ID_SELECT, (ClickHandler) select_click_handler);
 }
 
-/*
-static void click_config_provider(void *context) {
-	window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
-	window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
-	window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
-}
-*/
-
 static void bg_layer_draw(Layer *layer, GContext *ctx) {
 	GRect bounds = layer_get_bounds(layer);
 	
@@ -154,31 +126,19 @@ static void bg_layer_draw(Layer *layer, GContext *ctx) {
 	
 	// progress container
 	graphics_fill_rect(ctx, GRect(0, 121, bounds.size.w, 25), 4, GCornersAll);
-	
-	// Draw a black filled rectangle with sharp corners
-	//graphics_context_set_fill_color(ctx, GColorBlack);
-	//graphics_fill_rect(ctx, bounds, 0, GCornerNone);
-	
-	// Draw a white filled circle a radius of half the layer height
-	//graphics_context_set_fill_color(ctx, GColorWhite);
-	//const int16_t half_h = bounds.size.h / 2;
-	//graphics_fill_circle(ctx, GPoint(half_h, half_h), half_h);
 }
 
 static void window_load(Window *window) {
 	Layer *window_layer = window_get_root_layer(window);
 	GRect bounds = layer_get_bounds(window_layer);
 	
+	// load action bar images
 	image_up = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_UP);
 	
 	// Initialize the action bar:
 	action_bar = action_bar_layer_create();
-	
-	// Associate the action bar with the window:
 	action_bar_layer_add_to_window(action_bar, window);
-	
 	action_bar_layer_set_click_config_provider(action_bar,click_config_provider);
-	
 	action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_up);
 	action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, image_up);
 	action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_up);
@@ -225,67 +185,16 @@ static void window_load(Window *window) {
 	text_layer_set_text_alignment(progress_label, GTextAlignmentLeft);
 	layer_add_child(bg_layer, text_layer_get_layer(progress_label));
 	
-  	/*
-	// file label
-	file_label = text_layer_create((GRect) {.origin={0,0}, .size = {bounds.size.w, 30}});
-	text_layer_set_text(file_label, "Printing:");
-	text_layer_set_text_color(file_label, GColorWhite);
-	text_layer_set_background_color(file_label, GColorBlack);
-	text_layer_set_font(file_label, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-	text_layer_set_text_alignment(file_label, GTextAlignmentCenter);
-	layer_add_child(window_layer, text_layer_get_layer(file_label));
 	
-	
-	// filename
-	file_layer = text_layer_create((GRect) {.origin={0,30}, .size = {bounds.size.w, 20}});
-	text_layer_set_text(file_layer, "");
-	text_layer_set_text_alignment(file_layer, GTextAlignmentLeft);
-	layer_add_child(window_layer, text_layer_get_layer(file_layer));
-	
-	// temp label
-	temp_label = text_layer_create((GRect) {.origin={0,50}, .size = {bounds.size.w, 30}});
-	text_layer_set_text(temp_label, "Temp:");
-	text_layer_set_text_color(temp_label, GColorWhite);
-	text_layer_set_background_color(temp_label, GColorBlack);
-	text_layer_set_font(temp_label, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-	text_layer_set_text_alignment(temp_label, GTextAlignmentCenter);
-	layer_add_child(window_layer, text_layer_get_layer(temp_label));
-	
-	// temp
-	temp_layer = text_layer_create((GRect) {.origin={0,80}, .size = {bounds.size.w, 20}});
-	text_layer_set_text(temp_layer, "");
-	text_layer_set_text_alignment(temp_layer, GTextAlignmentLeft);
-	layer_add_child(window_layer, text_layer_get_layer(temp_layer));
-	
-	// progress label
-	progress_label = text_layer_create((GRect) {.origin={0,100}, .size = {bounds.size.w, 30}});
-	text_layer_set_text(progress_label, "Progress:");
-	text_layer_set_text_color(progress_label, GColorWhite);
-	text_layer_set_background_color(progress_label, GColorBlack);
-	text_layer_set_font(progress_label, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-	text_layer_set_text_alignment(progress_label, GTextAlignmentCenter);
-	layer_add_child(window_layer, text_layer_get_layer(progress_label));
-	
-	// progress  
-	progress_layer = text_layer_create((GRect) {.origin={0,130}, .size = {bounds.size.w, 20}});
-	text_layer_set_text(progress_layer, "");
-	text_layer_set_text_alignment(progress_layer, GTextAlignmentLeft);
-	layer_add_child(window_layer, text_layer_get_layer(progress_layer));
-	*/
-	
+	// start timer to auto-update
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
 }
 
 static void window_unload(Window *window) {
- 
- 	/*
-	text_layer_destroy(file_label);
-	text_layer_destroy(file_layer);
-	text_layer_destroy(temp_label);
-	text_layer_destroy(temp_layer);
+	text_layer_destroy(time_remaining_label);
+	text_layer_destroy(time_remaining_counter);
+	text_layer_destroy(filename_label);
 	text_layer_destroy(progress_label);
-	text_layer_destroy(progress_layer);
-	*/
 }
 
 static void init(void) {
