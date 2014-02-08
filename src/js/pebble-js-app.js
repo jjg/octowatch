@@ -126,4 +126,10 @@ Pebble.addEventListener("showConfiguration",
 		Pebble.openURL('https://raw.github.com/jjg/octowatch/master/configure.html');
 	}
 );
+
+Pebble.addEventListener("webviewclosed",
+  function(e) {
+    console.log("Configuration window returned: " + e.response);
+  }
+);
                         
