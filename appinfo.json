@@ -16,8 +16,8 @@
     "media": [
     	{
           "type": "png",
-          "name": "IMAGE_UP",
-          "file": "images/up.png"
+          "name": "IMAGE_REFRESH",
+          "file": "images/refresh.png"
         }
     ]
   }
