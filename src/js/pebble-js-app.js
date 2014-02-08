@@ -127,9 +127,13 @@ Pebble.addEventListener("showConfiguration",
 	}
 );
 
-Pebble.addEventListener("webviewclosed",
-  function(e) {
-    console.log("Configuration window returned: " + e.response);
-  }
+Pebble.addEventListener("webviewclosed", function(e) {
+		var options = JSON.parse(decodeURIComponent(e.response));
+		console.log("Options = " + JSON.stringify(options));
+	}
 );
-                        
+
+
+
+
+
