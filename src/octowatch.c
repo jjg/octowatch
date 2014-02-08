@@ -21,6 +21,12 @@ enum PrintJobKey {
 */
 
 enum {
+  BUTTON_CLICK = 0x0,
+  SELECT_CLICK = 0x1,
+  DOWN_CLICK = 0x2,
+};
+
+enum {
 	AKEY_NUMBER,
 	AKEY_TEXT,
 };
@@ -75,23 +81,54 @@ static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
     
 // button events
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //text_layer_set_text(text_layer, "Select");
   
+	Tuplet button_tuple = TupletCString(BUTTON_CLICK, "select");
+	
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
 	
-	Tuplet value = TupletInteger(1, 42);
-	dict_write_tuplet(iter, &value);
+	if (iter == NULL) {
+	return;
+	}
+	
+	dict_write_tuplet(iter, &button_tuple);
+	dict_write_end(iter);
 	
 	app_message_outbox_send();
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //text_layer_set_text(text_layer, "Up");
+
+	Tuplet button_tuple = TupletCString(BUTTON_CLICK, "up");
+	
+	DictionaryIterator *iter;
+	app_message_outbox_begin(&iter);
+	
+	if (iter == NULL) {
+	return;
+	}
+	
+	dict_write_tuplet(iter, &button_tuple);
+	dict_write_end(iter);
+	
+	app_message_outbox_send();
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  //text_layer_set_text(text_layer, "Down");
+
+	Tuplet button_tuple = TupletCString(BUTTON_CLICK, "down");
+	
+	DictionaryIterator *iter;
+	app_message_outbox_begin(&iter);
+	
+	if (iter == NULL) {
+	return;
+	}
+	
+	dict_write_tuplet(iter, &button_tuple);
+	dict_write_end(iter);
+	
+	app_message_outbox_send();
 }
 
 static void click_config_provider(void *context) {

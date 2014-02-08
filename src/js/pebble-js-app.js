@@ -5,9 +5,7 @@ function fetchPrinterStatus() {
   req.onload = function(e) {
     if (req.readyState == 4) {
       if(req.status == 200) {
-        //console.log(req.responseText);
         response = JSON.parse(req.responseText);
-        //var filename, temp, progress;
         
         var filename = response.job.filename;
         var temp = response.temperatures.extruder.current.toString();
@@ -48,8 +46,10 @@ Pebble.addEventListener("appmessage",
 	function(e) {
 		console.log('received appMessage:');                        
 		console.log(e.type);
-		console.log(e.payload);
-	  
-		fetchPrinterStatus();
+		console.log(e.payload.button);
+		
+		if(e.payload.button == "select"){
+			fetchPrinterStatus();
+		}
 });
                         
