@@ -12,8 +12,6 @@ static TextLayer *progress_layer;
 
 enum {
 	OCTOPRINT_COMMAND = 0x0,
-  //SELECT_CLICK = 0x1,
-  //DOWN_CLICK = 0x2,
 };
 
 enum {
@@ -79,6 +77,7 @@ void in_dropped_handler(AppMessageResult reason, void *context) {
 
 // timer events
 static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
+
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "update timer fired");
 	
 	send_octoprint_command("update");
@@ -87,46 +86,22 @@ static void handle_minute_tick(struct tm *tick_time, TimeUnits units_changed) {
 // button events
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   
-  send_octoprint_command("update");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "select click");
+  
+	send_octoprint_command("update");
 
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 
-/*
-	Tuplet button_tuple = TupletCString(BUTTON_CLICK, "up");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "up click");
 	
-	DictionaryIterator *iter;
-	app_message_outbox_begin(&iter);
-	
-	if (iter == NULL) {
-	return;
-	}
-	
-	dict_write_tuplet(iter, &button_tuple);
-	dict_write_end(iter);
-	
-	app_message_outbox_send();
-	*/
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
 
-	/*
-	Tuplet button_tuple = TupletCString(BUTTON_CLICK, "down");
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "down click");
 	
-	DictionaryIterator *iter;
-	app_message_outbox_begin(&iter);
-	
-	if (iter == NULL) {
-	return;
-	}
-	
-	dict_write_tuplet(iter, &button_tuple);
-	dict_write_end(iter);
-	
-	app_message_outbox_send();
-	*/
 }
 
 static void click_config_provider(void *context) {
