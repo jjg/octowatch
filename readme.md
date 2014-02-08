@@ -42,7 +42,13 @@ The API key take a little fiddling with Octoprint to get setup, but the process 
 
 Once you have the above collected, open the Pebble App on your phone, select Octowatch and then tap the "SETTINGS" button with the little gear next to it.
 
-This will bring up the (yes, ugly) configuration screen for Octowatch.  Enter the information you gathered above into these fields and tap "save".  In a few seconds your Pebble should be displaying the status of your printer!
+![Pebble App screenshot](https://raw.github.com/jjg/octowatch/master/pebbleapp.png "Pebble App Config")
+
+This will bring up the (yes, ugly) configuration screen for Octowatch.  Enter the information you gathered above into these fields and tap "save".  
+
+![Octowatch config screenshot](https://raw.github.com/jjg/octowatch/master/octowatchconfig.png "Octowatch config")
+
+In a few seconds your Pebble should be displaying the status of your printer!
 
 ##Troubleshooting
 Octowatch is considered Alpha software at the moment.  Things are likely to change and bugs can be expected.  If you run into trouble, double-check the settings as right now Octowatch won't tell you if you entred something wrong, it simply won't work correctly (this will be improved in future versions :)
