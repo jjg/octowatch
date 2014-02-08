@@ -38,7 +38,6 @@ function appMessageNACK(e){
 Pebble.addEventListener("ready",
     function(e) {
     	console.log("got ready event");
-        //fetchPrinterStatus();
     }
 );
 
@@ -46,9 +45,9 @@ Pebble.addEventListener("appmessage",
 	function(e) {
 		console.log('received appMessage:');                        
 		console.log(e.type);
-		console.log(e.payload.button);
+		console.log(e.payload.octoprint_command);
 		
-		if(e.payload.button == "select"){
+		if(e.payload.octoprint_command == "update"){
 			fetchPrinterStatus();
 		}
 });

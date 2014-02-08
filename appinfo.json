@@ -11,7 +11,7 @@
   "appKeys": {
     "down": 2,
     "select": 1,
-    "button": 0
+    "octoprint_command": 0
   },
   "resources": {
     "media": []
