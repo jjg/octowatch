@@ -141,11 +141,15 @@ Pebble.addEventListener("webviewclosed", function(e) {
 
 		console.log('saving settings');
 
-		var options = JSON.parse(decodeURIComponent(e.response));
+		try{
+			var options = JSON.parse(decodeURIComponent(e.response));
 		
-		localStorage.setItem('octoprinthost', options.server_host);
-		localStorage.setItem('octoprintport', options.server_port);
-		localStorage.setItem('octoprintapikey', options.server_api_key);
+			localStorage.setItem('octoprinthost', options.server_host);
+			localStorage.setItem('octoprintport', options.server_port);
+			localStorage.setItem('octoprintapikey', options.server_api_key);
+		} catch(e) {
+			console.log('settings not updated');
+		}
 	}
 );
 
