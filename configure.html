@@ -8,11 +8,14 @@
 			<li>host: <input id="host">
 			<li>port: <input id="port">
 			<li>api key: <input id="api_key">
-			<li><button id="save_button" action="saveSettings()">save</button>
+			<li><button id="save_button" onclick="saveSettings()">save</button>
 		</ul>
 		
 		<script>
 			function saveSettings(){
+				console.log('saving settings');
+				
+				console.log('close configuration view');
 				document.location = 'pebblejs:///close';
 			}
 		</script>

@@ -123,7 +123,7 @@ Pebble.addEventListener("showConfiguration",
 	function(){
 		console.log('running configuration');
 		
-		//Pebble.openURL();
+		Pebble.openURL('https://raw.github.com/jjg/octowatch/master/configure.html');
 	}
 );
                         
