@@ -3,6 +3,8 @@ var octoprint_host = '10.0.1.14';
 var octoprint_port = '5000';
 var octoprint_api_key = '72314DBEB2E0475CA0F98DB25B17FB86';
 
+var printing = false;
+
 function fetchPrinterStatus() {
 
 	var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/state?apikey=' + octoprint_api_key;
@@ -16,6 +18,14 @@ function fetchPrinterStatus() {
 			response = JSON.parse(req.responseText);
 			
 			var filename = response.job.filename;
+			
+			// send notification when done
+			if(printing && !response.state.flags.printing){
+				var d = new Date();
+				Pebble.showSimpleNotificationOnPebble('Printing Complete', filename + ' finished printing at ' + d);
+			}
+			
+			printing = response.state.flags.printing;
 			
 			var remaining = response.progress.printTimeLeft;
 			var remaining_string = '00:00';
