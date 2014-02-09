@@ -46,7 +46,7 @@ Once you have the above collected, open the Pebble App on your phone, select Oct
 
 ![Pebble App screenshot](https://raw.github.com/jjg/octowatch/master/pebbleapp.png "Pebble App Config")
 
-This will bring up the (yes, ugly) configuration screen for Octowatch.  Enter the information you gathered above into these fields and tap "save".  
+This will bring up the configuration screen for Octowatch.  Enter the information you gathered above into these fields and tap "save".  
 
 ![Octowatch config screenshot](https://raw.github.com/jjg/octowatch/master/octowatchconfig.png "Octowatch config")
 
