@@ -1,16 +1,84 @@
 <html>
 	<head>
 		<title>Octowatch Configuration</title>
+		<style>
+			body{
+				background-color: black;
+				color: white;
+				font:bold 12px "helvetica neue", helvetica, arial, sans-serif;
+			}
+			button.minimal {
+			  background: #e3e3e3;
+			  border: 1px solid #bbb;
+			  -webkit-border-radius: 3px;
+			  -moz-border-radius: 3px;
+			  border-radius: 3px;
+			  -webkit-box-shadow: inset 0 0 1px 1px #f6f6f6;
+			  -moz-box-shadow: inset 0 0 1px 1px #f6f6f6;
+			  box-shadow: inset 0 0 1px 1px #f6f6f6;
+			  color: #333;
+			  font: bold 12px "helvetica neue", helvetica, arial, sans-serif;
+			  line-height: 1;
+			  padding: 8px 0 9px;
+			  text-align: center;
+			  text-shadow: 0 1px 0 #fff;
+			  width: 150px; }
+			  button.minimal:hover {
+			    background: #d9d9d9;
+			    -webkit-box-shadow: inset 0 0 1px 1px #eaeaea;
+			    -moz-box-shadow: inset 0 0 1px 1px #eaeaea;
+			    box-shadow: inset 0 0 1px 1px #eaeaea;
+			    color: #222;
+			    cursor: pointer; }
+			  button.minimal:active {
+			    background: #d0d0d0;
+			    -webkit-box-shadow: inset 0 0 1px 1px #e3e3e3;
+			    -moz-box-shadow: inset 0 0 1px 1px #e3e3e3;
+			    box-shadow: inset 0 0 1px 1px #e3e3e3;
+			    color: #000; }
+			    
+			 input.minimal {
+			  background: #e3e3e3;
+			  border: 1px solid #bbb;
+			  -webkit-border-radius: 3px;
+			  -moz-border-radius: 3px;
+			  border-radius: 3px;
+			  -webkit-box-shadow: inset 0 0 1px 1px #f6f6f6;
+			  -moz-box-shadow: inset 0 0 1px 1px #f6f6f6;
+			  box-shadow: inset 0 0 1px 1px #f6f6f6;
+			  color: #333;
+			  font: bold 12px "helvetica neue", helvetica, arial, sans-serif;
+			  line-height: 1;
+			  padding: 8px 0 9px;
+			  text-align: center;
+			  text-shadow: 0 1px 0 #fff;
+			  width: 150px; }
+			  button.minimal:hover {
+			    background: #d9d9d9;
+			    -webkit-box-shadow: inset 0 0 1px 1px #eaeaea;
+			    -moz-box-shadow: inset 0 0 1px 1px #eaeaea;
+			    box-shadow: inset 0 0 1px 1px #eaeaea;
+			    color: #222;
+			    cursor: pointer; }
+			  button.minimal:active {
+			    background: #d0d0d0;
+			    -webkit-box-shadow: inset 0 0 1px 1px #e3e3e3;
+			    -moz-box-shadow: inset 0 0 1px 1px #e3e3e3;
+			    box-shadow: inset 0 0 1px 1px #e3e3e3;
+			    color: #000; }
+		</style>
 	</head>
 	<body>
-		<h3>Octoprint Server Settings</h3>
-		<ul>
-			<li>host: <input id="host">
-			<li>port: <input id="port">
-			<li>api key: <input id="api_key">
-			<li><button id="save_button" onclick="saveSettings()">save</button>
-		</ul>
-		
+		<br>
+		<center>
+		<h1>Octoprint server settings:</h1>
+		<table>
+			<tr><td>Name or IP Address:</td><td><input class="minimal" id="host" type="text"></td></tr>
+			<tr><td>Port:</td><td><input class="minimal" id="port" type="text"></td></tr>
+			<tr><td>API Key:</td><td><input class="minimal" id="api_key" type="text"></td></tr>
+			<tr><td colspan=2 align="right"><button class="minimal" id="save_button" onclick="saveSettings()">Save</button></tr></td>
+		</table>
+		</center>
 		<script>
 			function saveSettings(){
 
