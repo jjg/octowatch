@@ -1,24 +1,26 @@
 {
-  "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
-  "shortName": "Octowatch",
-  "longName": "Octowatch",
-  "capabilities": [ "configurable" ],
-  "companyName": "Gullickson Laboratories",
-  "versionCode": 1,
-  "versionLabel": "1.0.0",
-  "watchapp": {
-    "watchface": false
-  },
-  "appKeys": {
-    "octoprint_command": 0
-  },
-  "resources": {
-    "media": [
-    	{
-          "type": "png",
-          "name": "IMAGE_REFRESH",
-          "file": "images/refresh.png"
-        }
-    ]
-  }
+    "appKeys": {
+        "octoprint_command": 0
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
+    "versionLabel": "1.0.0",
+    "longName": "Octowatch",
+    "companyName": "Gullickson Laboratories",
+    "versionCode": 1,
+    "resources": {
+        "media": [
+            {
+                "type": "png",
+                "name": "IMAGE_REFRESH",
+                "file": "images/refresh.png"
+            }
+        ]
+    },
+    "watchapp": {
+        "watchface": false
+    },
+    "shortName": "Octowatch"
 }

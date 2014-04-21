@@ -33,7 +33,7 @@ function fetchPrinterStatus() {
 				remaining_string = remaining.toString().substring(0,5);
 			}
 			
-			var remaining = remaining_string;
+			remaining = remaining_string;
 			
 			var prog_percent = Math.round(Number(response.progress.progress) * 100);
 			prog_percent = prog_percent + '% complete';
@@ -48,13 +48,15 @@ function fetchPrinterStatus() {
 			filename = filename.substring(0,20) + '...';
 			
 			Pebble.sendAppMessage({
-			    "0":filename,
-			    "1":remaining,
-			    "2":progress}, appMessageACK, appMessageNACK);
+        "0":filename,
+        "1":remaining,
+        "2":progress}, appMessageACK, appMessageNACK);
 			}
+    
 		} else {
 		
 			console.log('something went wrong, ' + req.status);
+      
 		}
 	}
 	req.send(null);
