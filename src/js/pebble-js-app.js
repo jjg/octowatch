@@ -135,7 +135,14 @@ Pebble.addEventListener("showConfiguration",
 	function(){
 		console.log('running configuration');
 		
-		Pebble.openURL('https://rawgithub.com/jjg/octowatch/master/configure.html');
+    //Pebble.openURL('https://rawgithub.com/jjg/octowatch/master/configure.html');
+    
+    var octoprint_host = localStorage.getItem('octoprinthost');
+	  var octoprint_port = localStorage.getItem('octoprintport');
+	  var octoprint_api_key = localStorage.getItem('octoprintapikey');
+    var uri;
+    uri = 'http://dtfuhf.com/configure.html?host=' + encodeURIComponent(octoprint_host) + '&port=' + encodeURIComponent(octoprint_port) + '&key=' + encodeURIComponent(octoprint_api_key);
+    Pebble.openURL(uri);
 	}
 );
 
