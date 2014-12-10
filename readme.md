@@ -40,7 +40,7 @@ In order to monitor your printer you have to tell Octowatch a little about it.  
 *  Port that Octoprint is listening on (usually 80 or 5000)
 *  The API key for your Octoprint server
 
-The API key take a little fiddling with Octoprint to get setup, but the process is documented here: https://github.com/foosel/OctoPrint/wiki/REST-API
+If you haven't already you can easily create an API key using the instructions here: http://docs.octoprint.org/en/master/api/general.html#authorization
 
 Once you have the above collected, open the Pebble App on your phone, select Octowatch and then tap the "SETTINGS" button with the little gear next to it.
 
