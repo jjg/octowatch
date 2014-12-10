@@ -1,3 +1,5 @@
+var previous_state = null;
+
 function fetchPrinterStatus() {
 
   var octoprint_host = localStorage.getItem('octoprinthost');
@@ -62,13 +64,14 @@ function fetchPrinterStatus() {
             "1":remaining_string,
             "2":job_status}, appMessageACK, appMessageNACK);
   
-          /* disabled until we can determine how to trigger it correctly
           // send notification when done
-          if(response.state === "Operational" && response.job.progress.completion == 100){
+          if(previous_state === "Printing" && response.state === "Operational" && response.progress.completion === 100.0){
             var d = new Date();
             Pebble.showSimpleNotificationOnPebble('Printing Complete', filename + ' finished printing at ' + d);
+            previous_state = response.state;
+          } else {
+            previous_state = response.state;
           }
-          */
       }
     } else {
       console.log('something went wrong, ' + req.status);
