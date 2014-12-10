@@ -33,11 +33,11 @@ function fetchPrinterStatus() {
           } else {
             remaining_seconds = response.job.estimatedPrintTime;
           }
+          var remaining_time = secondsToTime(remaining_seconds);
+          var formatted_hours = (remaining_time.h < 10) ? ('0' + remaining_time.h) : remaining_time.h;
+          var formatted_minutes = (remaining_time.m < 10) ? ('0' + remaining_time.m) : remaining_time.m;
+          remaining_string = formatted_hours + ':' + formatted_minutes;
           
-          var remaining_hours = Math.floor((remaining_seconds / 60) / 60);
-          var remaining_minutes = Math.floor((remaining_seconds / 60) % 60);
-          remaining_string = remaining_hours + ':' + remaining_minutes;
-
           // update job status
           var prog_percent = Math.round(Number(response.progress.completion));
           job_status = response.state;
@@ -175,5 +175,23 @@ Pebble.addEventListener("webviewclosed", function(e) {
 
 
 
+// utilities
+function secondsToTime(secs)
+{
+    secs = Math.round(secs);
+    var hours = Math.floor(secs / (60 * 60));
 
+    var divisor_for_minutes = secs % (60 * 60);
+    var minutes = Math.floor(divisor_for_minutes / 60);
+
+    var divisor_for_seconds = divisor_for_minutes % 60;
+    var seconds = Math.ceil(divisor_for_seconds);
+
+    var obj = {
+        "h": hours,
+        "m": minutes,
+        "s": seconds
+    };
+    return obj;
+}
 
