@@ -5,22 +5,23 @@
     "capabilities": [
         "configurable"
     ],
-    "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
-    "versionLabel": "1.0.0",
-    "longName": "Octowatch",
     "companyName": "Gullickson Laboratories",
-    "versionCode": 1,
+    "longName": "Octowatch",
+    "projectType": "native",
     "resources": {
         "media": [
             {
-                "type": "png",
+                "file": "images/refresh.png",
                 "name": "IMAGE_REFRESH",
-                "file": "images/refresh.png"
+                "type": "png"
             }
         ]
     },
+    "shortName": "Octowatch",
+    "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
+    "versionCode": 1,
+    "versionLabel": "1.1",
     "watchapp": {
         "watchface": false
-    },
-    "shortName": "Octowatch"
+    }
 }
