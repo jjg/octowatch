@@ -12,8 +12,9 @@ function fetchPrinterStatus() {
   req.onload = function(e) {
     if (req.readyState == 4) {
       if(req.status == 200) {
+        
         // init default display values
-        var filename = 'no file loaded';
+        var filename = 'no file selected';
         var remaining_string = '00:00';
         var job_status = 'Connected';
 
@@ -46,7 +47,7 @@ function fetchPrinterStatus() {
           }
           
           // Issue: too long filenames break messaging, so
-          // for now, trimming them to 23chrs max
+          // for now, trimming them to 20chrs max
           filename = filename.substring(0,20) + '...';
         }
         
@@ -61,11 +62,13 @@ function fetchPrinterStatus() {
             "1":remaining_string,
             "2":job_status}, appMessageACK, appMessageNACK);
   
+          /* disabled until we can determine how to trigger it correctly
           // send notification when done
-          if(response.job.progress.completion == 100){
+          if(response.state === "Operational" && response.job.progress.completion == 100){
             var d = new Date();
             Pebble.showSimpleNotificationOnPebble('Printing Complete', filename + ' finished printing at ' + d);
           }
+          */
       }
     } else {
       console.log('something went wrong, ' + req.status);
@@ -91,20 +94,20 @@ function pausePrinter() {
   req.open('POST', octoprint_api_url, true);
   req.data = 'x-api-key=' + octoprint_api_key + '&body={"command":"pause"}';
   req.onload = function(e) {
-  if (req.readyState == 4) {
-    if(req.status == 200) {
+    if (req.readyState == 4) {
+      if(req.status == 200) {
+        
+        response = JSON.parse(req.responseText);
+        
+        console.log(response);
+        
+        Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
+        }
+      } else {
       
-      response = JSON.parse(req.responseText);
-      
-      console.log(response);
-      
-      Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
+        console.log('something went wrong, ' + req.status);
       }
-    } else {
-    
-      console.log('something went wrong, ' + req.status);
-    }
-  }
+    };
   req.send(null);
 }
 
