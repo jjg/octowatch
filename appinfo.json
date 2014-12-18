@@ -11,13 +11,13 @@
     "resources": {
         "media": [
             {
-                "file": "images/exit.png",
-                "name": "IMAGE_EXIT",
+                "file": "images/pause.png",
+                "name": "IMAGE_PAUSE",
                 "type": "png"
             },
             {
-                "file": "images/pause.png",
-                "name": "IMAGE_PAUSE",
+                "file": "images/exit.png",
+                "name": "IMAGE_EXIT",
                 "type": "png"
             },
             {

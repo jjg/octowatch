@@ -83,6 +83,10 @@ function fetchPrinterStatus() {
 
 function pausePrinter() {
 
+	// debug
+	console.log('got pausePrinter');
+	
+	/*
   var octoprint_host = localStorage.getItem('octoprinthost');
   var octoprint_port = localStorage.getItem('octoprintport');
   var octoprint_api_key = localStorage.getItem('octoprintapikey');
@@ -112,6 +116,12 @@ function pausePrinter() {
       }
     };
   req.send(null);
+	*/
+}
+
+function cancelJob(){
+	// debug
+	console.log('got cancelJob');
 }
 
 
@@ -142,11 +152,12 @@ Pebble.addEventListener("appmessage",
     
     if(e.payload.octoprint_command == "pause"){
       // toggle pause state
-      //pausePrinter();
+      pausePrinter();
     }
     
     if(e.payload.octoprint_command == "cancel"){
       // cancel the print job
+			cancelJob();
     }
 });
 
