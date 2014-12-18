@@ -3,6 +3,9 @@
 static Window *window;
 ActionBarLayer *action_bar;
 static GBitmap *image_refresh;
+static GBitmap *image_pause;
+static GBitmap *image_start;
+static GBitmap *image_exit;
 static Layer *bg_layer;
 static TextLayer *time_remaining_label;
 static TextLayer *time_remaining_counter;
@@ -134,14 +137,17 @@ static void window_load(Window *window) {
 	
 	// load action bar images
 	image_refresh = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_REFRESH);
+  image_start = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_START);
+  image_pause = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_PAUSE);
+  image_exit = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXIT);
 	
 	// Initialize the action bar:
 	action_bar = action_bar_layer_create();
 	action_bar_layer_add_to_window(action_bar, window);
 	action_bar_layer_set_click_config_provider(action_bar,click_config_provider);
-	//action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_up);
+	action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_pause);
 	action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, image_refresh);
-	//action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_up);
+	action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_exit);
 	
 	// background layer
 	bg_layer = layer_create(GRect(1, 3, (bounds.size.w - 22), bounds.size.h));
