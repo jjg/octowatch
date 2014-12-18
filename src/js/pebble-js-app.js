@@ -85,7 +85,7 @@ function fetchPrinterStatus() {
   req.send(null);
 }
 
-function pausePrinter() {
+function startOrPauseJob() {
 
 	// debug
 	console.log('got pausePrinter');
@@ -108,7 +108,16 @@ function pausePrinter() {
 			}
 		}
 	};
-  req.send('{"command":"pause"}');
+	
+	// if a job is printing, pause or resume; otherwise try to start the job
+	var job_command = null;
+	if(job_status != 'Printing' && job_status != 'Paused'){
+		job_command = '{"command":"start"}';
+	} else {
+		job_command = '{"command":"pause"}';
+	}
+	
+  req.send(job_command);
 }
 
 function cancelJob(){
@@ -163,8 +172,7 @@ Pebble.addEventListener("appmessage",
     }
     
     if(e.payload.octoprint_command == "pause"){
-      // toggle pause state
-      pausePrinter();
+      startOrPauseJob();
     }
     
     if(e.payload.octoprint_command == "cancel"){
