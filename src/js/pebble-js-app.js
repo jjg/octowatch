@@ -42,12 +42,15 @@ function fetchPrinterStatus() {
           remaining_string = formatted_hours + ':' + formatted_minutes;
           
           // update job status
-          var prog_percent = Math.round(Number(response.progress.completion));
           job_status = response.state;
+					
+					/* - remove % done from status for now, use status only for printer state
+					var prog_percent = Math.round(Number(response.progress.completion));
           if(prog_percent > 0){
             job_status = job_status + ' ' + prog_percent + '%';
           }
-          
+          */
+					
           // Issue: too long filenames break messaging, so
           // for now, trimming them to 20chrs max
           filename = filename.substring(0,20) + '...';
