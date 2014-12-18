@@ -4,7 +4,7 @@ Use your Pebble watch to monitor and control 3D printers that use the excellent 
 ![Octowatch screenshot](https://raw.github.com/jjg/octowatch/master/octowatch_control.png "Sample screenshot")
 
 ##The Easy Way
-Octowatch is avaliable now on the Pebble Appstore.  If you don't feel like building it by hand you can find Octowatch in the [Pebble App Store](https://apps.getpebble.com/applications/52f704e6a374bac2ac0000ab) *note*: you'll still need to configure the app as described below!.
+If you don't feel like building it by hand you can find Octowatch in the [Pebble App Store](https://apps.getpebble.com/applications/52f704e6a374bac2ac0000ab) *note*: you'll still need to configure the app as described below!.
 
 ##Setup
 
