@@ -1,3 +1,9 @@
+// init watch messages 
+var filename = 'no file selected';
+var remaining_string = '00:00';
+var job_status = 'Connected';
+
+// remember the last state for end-of-job detection
 var previous_state = null;
 
 function fetchPrinterStatus() {
@@ -14,11 +20,6 @@ function fetchPrinterStatus() {
   req.onload = function(e) {
     if (req.readyState == 4) {
       if(req.status == 200) {
-        
-        // init default display values
-        var filename = 'no file selected';
-        var remaining_string = '00:00';
-        var job_status = 'Connected';
 
         // parse response
         response = JSON.parse(req.responseText);
@@ -89,12 +90,11 @@ function pausePrinter() {
 	// debug
 	console.log('got pausePrinter');
 	
-
   var octoprint_host = localStorage.getItem('octoprinthost');
   var octoprint_port = localStorage.getItem('octoprintport');
   var octoprint_api_key = localStorage.getItem('octoprintapikey');
   
-  var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/control/job';
+  var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/job';
   
   // debug
   console.log('calling ' + octoprint_api_url + ' to pause current print job');
@@ -102,27 +102,34 @@ function pausePrinter() {
   var response;
   var req = new XMLHttpRequest();
   req.open('POST', octoprint_api_url, true);
-  req.data = 'X-Api-Key=' + octoprint_api_key;
 	req.setRequestHeader("Content-type","application/json");
+	req.setRequestHeader('X-API-KEY', octoprint_api_key);
   req.onload = function(e) {
-		
-		// debug
-		console.log('pause request readyState: ' + req.readyState);
-		console.log('pause request status: ' + req.status);
-		
     if (req.readyState == 4) {
-      if(req.status == 200) {
+			
+			// debug
+			console.log('api pause request status: ' + req.status);
+			
+      if(req.status == 204) {
         
-        response = JSON.parse(req.responseText);
+        //response = JSON.parse(req.responseText);
         
 				console.log('api pause request response: ' + response);
         
+				// todo: tell the watch to update display status
+				// update status on watch
+				fetchPrinterStatus();
+				/*
+				Pebble.sendAppMessage({
+					"0":filename,
+					"1":remaining_string,
+					"2":job_status}, appMessageACK, appMessageNACK);
+				*/
         //Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
 				
         }
       } else {
-      
-        console.log('something went wrong, ' + req.status);
+				console.log('something went wrong, HTTP status: ' + req.status);
       }
     };
 	
