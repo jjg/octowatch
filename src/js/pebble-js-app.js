@@ -93,53 +93,47 @@ function pausePrinter() {
   var octoprint_host = localStorage.getItem('octoprinthost');
   var octoprint_port = localStorage.getItem('octoprintport');
   var octoprint_api_key = localStorage.getItem('octoprintapikey');
-  
   var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/job';
   
-  // debug
-  console.log('calling ' + octoprint_api_url + ' to pause current print job');
-  
-  var response;
   var req = new XMLHttpRequest();
   req.open('POST', octoprint_api_url, true);
 	req.setRequestHeader("Content-type","application/json");
 	req.setRequestHeader('X-API-KEY', octoprint_api_key);
   req.onload = function(e) {
-    if (req.readyState == 4) {
-			
-			// debug
-			console.log('api pause request status: ' + req.status);
-			
-      if(req.status == 204) {
-        
-        //response = JSON.parse(req.responseText);
-        
-				console.log('api pause request response: ' + response);
-        
-				// todo: tell the watch to update display status
-				// update status on watch
-				fetchPrinterStatus();
-				/*
-				Pebble.sendAppMessage({
-					"0":filename,
-					"1":remaining_string,
-					"2":job_status}, appMessageACK, appMessageNACK);
-				*/
-        //Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
-				
-        }
-      } else {
+		if (req.readyState == 4) {
+			if(req.status == 204) {		// 204 No Content is considered sucess
+				fetchPrinterStatus();		// tell the watch to update display status
+			} else {
 				console.log('something went wrong, HTTP status: ' + req.status);
-      }
-    };
-	
+			}
+		}
+	};
   req.send('{"command":"pause"}');
-
 }
 
 function cancelJob(){
 	// debug
 	console.log('got cancelJob');
+	
+  var octoprint_host = localStorage.getItem('octoprinthost');
+  var octoprint_port = localStorage.getItem('octoprintport');
+  var octoprint_api_key = localStorage.getItem('octoprintapikey');
+  var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/job';
+  
+  var req = new XMLHttpRequest();
+  req.open('POST', octoprint_api_url, true);
+	req.setRequestHeader("Content-type","application/json");
+	req.setRequestHeader('X-API-KEY', octoprint_api_key);
+  req.onload = function(e) {
+		if (req.readyState == 4) {
+			if(req.status == 204) {		// 204 No Content is considered sucess
+				fetchPrinterStatus();		// tell the watch to update display status
+			} else {
+				console.log('something went wrong, HTTP status: ' + req.status);
+			}
+		}
+	};
+  req.send('{"command":"cancel"}');
 }
 
 
