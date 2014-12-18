@@ -145,7 +145,6 @@ function cancelJob(){
   req.send('{"command":"cancel"}');
 }
 
-
 function appMessageACK(e){
   console.log('message delivered!');
 }
