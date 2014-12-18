@@ -1,3 +1,9 @@
+// init watch messages 
+var filename = 'no file selected';
+var remaining_string = '00:00';
+var job_status = 'Connected';
+
+// remember the last state for end-of-job detection
 var previous_state = null;
 
 function fetchPrinterStatus() {
@@ -14,11 +20,6 @@ function fetchPrinterStatus() {
   req.onload = function(e) {
     if (req.readyState == 4) {
       if(req.status == 200) {
-        
-        // init default display values
-        var filename = 'no file selected';
-        var remaining_string = '00:00';
-        var job_status = 'Connected';
 
         // parse response
         response = JSON.parse(req.responseText);
@@ -42,12 +43,15 @@ function fetchPrinterStatus() {
           remaining_string = formatted_hours + ':' + formatted_minutes;
           
           // update job status
-          var prog_percent = Math.round(Number(response.progress.completion));
           job_status = response.state;
+					
+					/* - remove % done from status for now, use status only for printer state
+					var prog_percent = Math.round(Number(response.progress.completion));
           if(prog_percent > 0){
             job_status = job_status + ' ' + prog_percent + '%';
           }
-          
+          */
+					
           // Issue: too long filenames break messaging, so
           // for now, trimming them to 20chrs max
           filename = filename.substring(0,20) + '...';
@@ -81,39 +85,65 @@ function fetchPrinterStatus() {
   req.send(null);
 }
 
-function pausePrinter() {
+function startOrPauseJob() {
 
+	// debug
+	console.log('got pausePrinter');
+	
   var octoprint_host = localStorage.getItem('octoprinthost');
   var octoprint_port = localStorage.getItem('octoprintport');
   var octoprint_api_key = localStorage.getItem('octoprintapikey');
+  var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/job';
   
-  var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/control/job';
-  
-  // debug
-  console.log('calling ' + octoprint_api_url + ' to pause current print job');
-  
-  var response;
   var req = new XMLHttpRequest();
   req.open('POST', octoprint_api_url, true);
-  req.data = 'x-api-key=' + octoprint_api_key + '&body={"command":"pause"}';
+	req.setRequestHeader("Content-type","application/json");
+	req.setRequestHeader('X-API-KEY', octoprint_api_key);
   req.onload = function(e) {
-    if (req.readyState == 4) {
-      if(req.status == 200) {
-        
-        response = JSON.parse(req.responseText);
-        
-        console.log(response);
-        
-        Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
-        }
-      } else {
-      
-        console.log('something went wrong, ' + req.status);
-      }
-    };
-  req.send(null);
+		if (req.readyState == 4) {
+			if(req.status == 204) {		// 204 No Content is considered sucess
+				fetchPrinterStatus();		// tell the watch to update display status
+			} else {
+				console.log('something went wrong, HTTP status: ' + req.status);
+			}
+		}
+	};
+	
+	// if a job is printing, pause or resume; otherwise try to start the job
+	var job_command = null;
+	if(job_status != 'Printing' && job_status != 'Paused'){
+		job_command = '{"command":"start"}';
+	} else {
+		job_command = '{"command":"pause"}';
+	}
+	
+  req.send(job_command);
 }
 
+function cancelJob(){
+	// debug
+	console.log('got cancelJob');
+	
+  var octoprint_host = localStorage.getItem('octoprinthost');
+  var octoprint_port = localStorage.getItem('octoprintport');
+  var octoprint_api_key = localStorage.getItem('octoprintapikey');
+  var octoprint_api_url = 'http://' + octoprint_host + ':' + octoprint_port + '/api/job';
+  
+  var req = new XMLHttpRequest();
+  req.open('POST', octoprint_api_url, true);
+	req.setRequestHeader("Content-type","application/json");
+	req.setRequestHeader('X-API-KEY', octoprint_api_key);
+  req.onload = function(e) {
+		if (req.readyState == 4) {
+			if(req.status == 204) {		// 204 No Content is considered sucess
+				fetchPrinterStatus();		// tell the watch to update display status
+			} else {
+				console.log('something went wrong, HTTP status: ' + req.status);
+			}
+		}
+	};
+  req.send('{"command":"cancel"}');
+}
 
 function appMessageACK(e){
   console.log('message delivered!');
@@ -141,12 +171,12 @@ Pebble.addEventListener("appmessage",
     }
     
     if(e.payload.octoprint_command == "pause"){
-      // toggle pause state
-      //pausePrinter();
+      startOrPauseJob();
     }
     
     if(e.payload.octoprint_command == "cancel"){
       // cancel the print job
+			cancelJob();
     }
 });
 

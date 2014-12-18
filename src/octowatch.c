@@ -3,11 +3,14 @@
 static Window *window;
 ActionBarLayer *action_bar;
 static GBitmap *image_refresh;
+static GBitmap *image_pause;
+static GBitmap *image_start;
+static GBitmap *image_exit;
 static Layer *bg_layer;
 static TextLayer *time_remaining_label;
 static TextLayer *time_remaining_counter;
 static TextLayer *filename_label;
-static TextLayer *progress_label;
+static TextLayer *status_label;
 
 enum {
 	OCTOPRINT_COMMAND = 0x0,
@@ -51,7 +54,7 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 	// Check for fields you expect to receive
 	Tuple *filename_tuple = dict_find(received, 0);
 	Tuple *remain_tuple = dict_find(received, 1);
-	Tuple *progress_tuple = dict_find(received, 2);
+	Tuple *status_tuple = dict_find(received, 2);
 
 	// Act on the found fields received
 	if (filename_tuple) {
@@ -64,9 +67,28 @@ void in_received_handler(DictionaryIterator *received, void *context) {
 		text_layer_set_text(time_remaining_counter, remain_tuple->value->cstring);
 	}
 	
-	if (progress_tuple) {
-		APP_LOG(APP_LOG_LEVEL_DEBUG, "setting progress to: %s", progress_tuple->value->cstring);
-		text_layer_set_text(progress_label, progress_tuple->value->cstring);
+	if (status_tuple){
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "setting status to: %s", status_tuple->value->cstring);
+		text_layer_set_text(status_label, status_tuple->value->cstring);
+		
+		// reflect state in pause control
+		if(strcmp(status_tuple->value->cstring, "Printing") == 0){
+			
+			// debug
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "setting icon to image_pause");
+			
+			// set pause control icon to pause
+			action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_pause);
+			
+		} else {
+			
+			// debug
+			APP_LOG(APP_LOG_LEVEL_DEBUG, "setting icon to image_start");
+			
+			// set pause control icon to play
+			action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_start);
+			
+		}
 	}
 }
 
@@ -124,7 +146,7 @@ static void bg_layer_draw(Layer *layer, GContext *ctx) {
 	// filename container
 	graphics_draw_round_rect(ctx, GRect(0,77, bounds.size.w, 40), 4);
 	
-	// progress container
+	// status container
 	graphics_fill_rect(ctx, GRect(0, 121, bounds.size.w, 25), 4, GCornersAll);
 }
 
@@ -134,14 +156,17 @@ static void window_load(Window *window) {
 	
 	// load action bar images
 	image_refresh = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_REFRESH);
+  image_start = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_START);
+  image_pause = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_PAUSE);
+  image_exit = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_EXIT);
 	
 	// Initialize the action bar:
 	action_bar = action_bar_layer_create();
 	action_bar_layer_add_to_window(action_bar, window);
 	action_bar_layer_set_click_config_provider(action_bar,click_config_provider);
-	//action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_up);
+	action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, image_start);
 	action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, image_refresh);
-	//action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_up);
+	action_bar_layer_set_icon(action_bar, BUTTON_ID_DOWN, image_exit);
 	
 	// background layer
 	bg_layer = layer_create(GRect(1, 3, (bounds.size.w - 22), bounds.size.h));
@@ -176,15 +201,14 @@ static void window_load(Window *window) {
 	text_layer_set_text_alignment(filename_label, GTextAlignmentLeft);
 	layer_add_child(bg_layer, text_layer_get_layer(filename_label));
 	
-	// progress
-	progress_label = text_layer_create(GRect(3, 122, (bg_bounds.size.w -4), 25));
-	text_layer_set_text(progress_label, "loading...");
-	text_layer_set_text_color(progress_label, GColorWhite);
-	text_layer_set_background_color(progress_label, GColorClear);
-	text_layer_set_font(progress_label, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-	text_layer_set_text_alignment(progress_label, GTextAlignmentLeft);
-	layer_add_child(bg_layer, text_layer_get_layer(progress_label));
-	
+	// status
+	status_label = text_layer_create(GRect(3, 122, (bg_bounds.size.w -4), 25));
+	text_layer_set_text(status_label, "loading...");
+	text_layer_set_text_color(status_label, GColorWhite);
+	text_layer_set_background_color(status_label, GColorClear);
+	text_layer_set_font(status_label, fonts_get_system_font(FONT_KEY_GOTHIC_18));
+	text_layer_set_text_alignment(status_label, GTextAlignmentLeft);
+	layer_add_child(bg_layer, text_layer_get_layer(status_label));
 	
 	// start timer to auto-update
 	tick_timer_service_subscribe(MINUTE_UNIT, handle_minute_tick);
@@ -194,7 +218,7 @@ static void window_unload(Window *window) {
 	text_layer_destroy(time_remaining_label);
 	text_layer_destroy(time_remaining_counter);
 	text_layer_destroy(filename_label);
-	text_layer_destroy(progress_label);
+	text_layer_destroy(status_label);
 }
 
 static void init(void) {

@@ -11,6 +11,21 @@
     "resources": {
         "media": [
             {
+                "file": "images/pause.png",
+                "name": "IMAGE_PAUSE",
+                "type": "png"
+            },
+            {
+                "file": "images/exit.png",
+                "name": "IMAGE_EXIT",
+                "type": "png"
+            },
+            {
+                "file": "images/start.png",
+                "name": "IMAGE_START",
+                "type": "png"
+            },
+            {
                 "file": "images/refresh.png",
                 "name": "IMAGE_REFRESH",
                 "type": "png"
@@ -20,7 +35,7 @@
     "shortName": "Octowatch",
     "uuid": "00ced8a2-4628-4953-b4f5-8edb48ca96d1",
     "versionCode": 1,
-    "versionLabel": "1.1",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": false
     }
