@@ -89,7 +89,7 @@ function pausePrinter() {
 	// debug
 	console.log('got pausePrinter');
 	
-	/*
+
   var octoprint_host = localStorage.getItem('octoprinthost');
   var octoprint_port = localStorage.getItem('octoprintport');
   var octoprint_api_key = localStorage.getItem('octoprintapikey');
@@ -102,24 +102,32 @@ function pausePrinter() {
   var response;
   var req = new XMLHttpRequest();
   req.open('POST', octoprint_api_url, true);
-  req.data = 'x-api-key=' + octoprint_api_key + '&body={"command":"pause"}';
+  req.data = 'X-Api-Key=' + octoprint_api_key;
+	req.setRequestHeader("Content-type","application/json");
   req.onload = function(e) {
+		
+		// debug
+		console.log('pause request readyState: ' + req.readyState);
+		console.log('pause request status: ' + req.status);
+		
     if (req.readyState == 4) {
       if(req.status == 200) {
         
         response = JSON.parse(req.responseText);
         
-        console.log(response);
+				console.log('api pause request response: ' + response);
         
-        Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
+        //Pebble.sendAppMessage({"3":"paused"}, appMessageACK, appMessageNACK);
+				
         }
       } else {
       
         console.log('something went wrong, ' + req.status);
       }
     };
-  req.send(null);
-	*/
+	
+  req.send('{"command":"pause"}');
+
 }
 
 function cancelJob(){
